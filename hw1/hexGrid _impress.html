@@ -1,0 +1,384 @@
+	<html>
+		<head>
+	<! -- Automatic Equation Numbering -->
+		<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+	  TeX: { equationNumbers: { autoNumber: "AMS" } }
+	});
+	</script>
+
+			<script type="text/javascript" src="./MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+			
+
+				<link href="./Impress/css/impress-demo.css" rel="stylesheet" /> 
+
+
+<style>
+img {
+    width: 300px;
+	height: 250px;
+	float: center;
+}
+
+
+</style>
+				
+			<title> Hexagonal Grids for solving PDEs | by Prasanth Prahladan</title>
+			</head>
+
+		<body>
+
+		<div id="impress">
+			<div id="title" class="step" data-x="0" data-y="0" data-rotate="0" data-scale="1.0">
+			<span class="try">APPM 7400 HW#1</span>
+			<h1>Hexagonal Grids for solving PDEs<sup>*</sup></h1>
+			<span class="footnote"><sup>*</sup>Prasanth Prahladan</span>
+		</div>
+		
+			<div id="" style="width:1000px;" class="step" data-x="-1000" data-y="-1000" data-rotate="20" data-scale="1.0">
+			<ol>
+			<li> Construction of Spatial Grid</li>
+<li> Grids and Grid Function</li>
+<li> Tilings in Wave-number Space</li>
+<li> Finite Difference Operators</li>
+<li> Explicit Finite Difference Schemes</li>
+<li> Stability Conditions </li>
+<li> Numerical Dispersion</li>
+<li> Example: Use of Staggered Grids in Computational Optics/Electro-magnetics</li>
+		</ol>
+		</div>
+</br>
+	</br>
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div style="width:1000px;" class="step" data-x="-1000" data-y="-2000" data-rotate="20" data-scale="1.0">
+		<h2>Introduction to Spatial Grids</h2>
+<p>A regular 2-D spatial grid is a collection of points defined as:</p>
+\begin{equation}
+\mathbf{G}_h = \bigg\{\mathbf{r}_{m_1, m_2} = h \big( m_1 \mathbf{x_1} + m_2 \mathbf{x_2} \big) | (m_1,m_2) \in \mathbb{Z}^2\bigg\}
+\end{equation}
+
+<p>A hexagonal grid is obtained when we displace each layer of points by $$(h_x, h_y) = (\frac{h}{2}, \frac{h\sqrt{3}}{2})$$.</p>
+
+		</div>
+
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div style="width:1000px;" class="step" data-x="-2000" data-y="-2000" data-rotate="20" data-scale="1.0">
+For each regular lattice, a suitable coordinate axis may be chosen for facilitating analysis. 
+For the Rectilinear Grid, we have \( \big( \mathbf{x_1}, \mathbf{x_2} \big) = \big([1,0]^T, [0,1]^T \big)\).
+
+For the Hexagonal Grid, we have \(\big( \mathbf{x_1}, \mathbf{x_2} \big) = \big([1,0]^T, [\frac{-1}{2},\frac{\sqrt{3}}{2}]^T \big)\).
+
+		</div>		
+		
+</br>
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" style="width:1000px;" class="step" data-x="-2000" data-y="-1000" data-rotate="20" data-scale="1.0">
+<h2>Staggered Grids</h2>
+
+		</div>		
+
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" style="width:1000px;" class="step" data-x="-2000" data-y="0" data-rotate="20" data-scale="0.4">
+<h2>Triangular and Hexagonal Nets</h2>
+<div style="float:left; width:50%"> Triangular Nets
+\begin{align*}
+u_1 - u_0 &= u(x+h,y) - u(x,y) \\
+&= h (\frac{\partial}{\partial x})u + \frac{h^2}{2!}(\frac{\partial^2 }{\partial^2 x})u + \frac{h^3}{3!} (\frac{\partial^3}{\partial^3 x})u + \cdots\\
+u_2 - u_0 &= u(x+\frac{h}{2},y+\frac{\sqrt{3}h}{2}) - u(x,y) \\
+&= h \bigg(\frac{1}{2}\frac{\partial}{\partial x} + \frac{\sqrt{3}}{2} \frac{\partial}{\partial y} \bigg)u \\
+&+ \frac{h^2}{2!}\bigg(\frac{1}{2}\frac{\partial}{\partial x} + \frac{\sqrt{3}}{2} \frac{\partial}{\partial y} \bigg)^2 u \\
+&+ \frac{h^3}{3!} \bigg(\frac{1}{2}\frac{\partial}{\partial x} + \frac{\sqrt{3}}{2} \frac{\partial}{\partial y} \bigg)^3 u + \cdots\\
+u_3 - u_0 &= u(x-\frac{h}{2},y+\frac{\sqrt{3}h}{2}) - u(x,y) \\
+&= h \bigg(\frac{-1}{2}\frac{\partial}{\partial x} + \frac{\sqrt{3}}{2} \frac{\partial}{\partial y} \bigg)u \\
+&+ \frac{h^2}{2!}\bigg(\frac{-1}{2}\frac{\partial}{\partial x} + \frac{\sqrt{3}}{2} \frac{\partial}{\partial y} \bigg)^2 u \\
+&+ \frac{h^3}{3!} \bigg(\frac{-1}{2}\frac{\partial}{\partial x} + \frac{\sqrt{3}}{2} \frac{\partial}{\partial y} \bigg)^3 u + \cdots\\
+\cdots (u_4-u_0), &(u_5-u_0), (u_6-u_0)
+\end{align*}
+</div>
+
+<div style="float:left; width:50%"> Hexagonal Net
+\begin{align*}
+u_1 - u_0 &= u(x+\frac{h}{2},y+\frac{\sqrt{3}h}{2}) - u(x,y) \\
+&= h \bigg(\frac{1}{2}\frac{\partial}{\partial x} + \frac{\sqrt{3}}{2} \frac{\partial}{\partial y} \bigg)u \\
+&+ \frac{h^2}{2!}\bigg(\frac{1}{2}\frac{\partial}{\partial x} + \frac{\sqrt{3}}{2} \frac{\partial}{\partial y} \bigg)^2 u \\
+&+ \frac{h^3}{3!} \bigg(\frac{1}{2}\frac{\partial}{\partial x} + \frac{\sqrt{3}}{2} \frac{\partial}{\partial y} \bigg)^3 u + \cdots\\
+u_2 - u_0 &= u(x-h,y) - u(x,y) \\
+&= -h (\frac{\partial}{\partial x})u + \frac{h^2}{2!}(\frac{\partial^2 }{\partial^2 x})u + \frac{-h^3}{3!} (\frac{\partial^3}{\partial^3 x})u + \cdots\\
+u_3 - u_0 &= u(x+\frac{h}{2},y-\frac{\sqrt{3}h}{2}) - u(x,y) \\
+&= h \bigg(\frac{1}{2}\frac{\partial}{\partial x} + \frac{-\sqrt{3}}{2} \frac{\partial}{\partial y} \bigg)u \\
+&+ \frac{h^2}{2!}\bigg(\frac{1}{2}\frac{\partial}{\partial x} + \frac{-\sqrt{3}}{2} \frac{\partial}{\partial y} \bigg)^2 u \\
+&+ \frac{h^3}{3!} \bigg(\frac{1}{2}\frac{\partial}{\partial x} + \frac{-\sqrt{3}}{2} \frac{\partial}{\partial y} \bigg)^3 u + \cdots\\
+\end{align*}
+</div> 
+		</div>		
+
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" style="width:1000px;" class="step" data-x="2000" data-y="0" data-rotate="20" data-scale="1.0">
+		<h3>Hexagonal and Triangular Net</h3>
+<div style="float:left; width:50%">
+Triangular Net
+\begin{align}
+\frac{2}{3h^2}(\sum u_i - 6 u_0) &= \Delta u + \frac{h^2}{16} \Delta^2 u \notag \\
+&+ R_0 \bigg(O(h^4)O\big( \frac{\partial^6}{\partial^k x \partial^{6-k}y}\big)\bigg)
+\end{align}
+</div>
+
+<div style="float:left; width:50%">Hexagonal Net
+\begin{align}
+\frac{4}{3h^2} \bigg( \sum_{i=1}^3 u_i - 3 u_0 \bigg) &= \Delta u \notag \\
+&+ R_0 \bigg( O(h) O(\frac{\partial^3}{\partial^k x \partial^{3-k} y})\bigg)
+\end{align}
+</div>
+		
+		</div>
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->		
+	</br>
+</br>
+</br>	
+		
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" style="width:1000px;" class="step" data-x="1000" data-y="1000" data-rotate="20" data-scale="1.0">
+
+<h3>Grid-functions for solving PDEs</h3>
+
+<img src="./images/jpgGridFunction.jpg"/> 
+
+We define a grid function \(u^{n}_{m_1, m_2}\) as a time series at each point on the spatial grid which approximates the continuous functions \(u(t,x,y)\) at time \(t = nk\), where \(k\) is the time-step and at the spatial position \((x,y)=\mathbf{r}_{m_1,m_2}\).		
+		
+		</div>
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->		
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" style="width:1000px;" class="step" data-x="0" data-y="1000" data-rotate="20" data-scale="1.0">
+<h3>Finite Difference Operators</h3>
+
+In the FDTD method, differential operators are approximated by finite difference operators. 
+
+First, we define the Unit-Shift operators as follows:
+\begin{align}
+S_{t\pm}\big( u^n_{m_1,m_2}\big) &= \big( u^{n+1}_{m_1,m_2}\big)\\
+S_{x_1 \pm}\big( u^{n}_{m_1,m_2}\big) &= \big( u^{n}_{m_1 \pm 1,m_2}\big)\\
+S_{x_2 \pm}\big( u^{n}_{m_1,m_2}\big) &= \big( u^{n}_{m_1,m_2 \pm 1}\big)\\
+S_{x_3 \pm} &= S_{x_2 \mp} \cdot S_{x_2 \mp}
+\end{align}
+
+Next, we proceed to build second-order finite difference operators as:
+\begin{align}
+\delta_{tt} &= \frac{1}{k^2} \big( S_{t-} + S_{t+} -2 \big)\\
+\delta_{x_i x_i} &= \frac{1}{h^2} \big( S_{x_i -} + S_{x_i +} -2 \big)\\
+\end{align}		
+		
+		</div>
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->		
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" style="width:1000px;" class="step" data-x="1000" data-y="2000" data-rotate="20" data-scale="1.0">
+<h3>Finite Difference Operators</h3>
+On the hexagonal grid we employ seven-points to build a second-order accurate approximation to the Laplacian:
+\begin{align}
+\delta_{\Delta \text{HEX}} &= \frac{2}{3} \big( \delta_{x_1 x_1} + \delta_{x_2 x_2} + \delta_{x_3 x_3}\big) \notag \\
+&= \Delta + \frac{h^2}{16} \Delta^2 + O(h^4)
+\end{align}
+where $$\Delta = \frac{2}{3}\big( \frac{\partial^2}{\partial x_1^2} + \frac{\partial^2}{\partial x_2^2} + \frac{\partial^2}{\partial x_3^2}\big)$$ is the 2-D Laplacian operator for the 2-D Wave Equation
+\begin{align}
+\bigg(\frac{\partial^2}{\partial t^2} - c^2 \Delta \bigg) u = 0
+\end{align}
+		
+		</div>
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->		
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" style="width:1000px;" class="step" data-x="3000" data-y="2000" data-rotate="20" data-scale="1.0">
+<h3>Finite Difference Operators</h3>
+Using the finite-difference operators, we solve the approximate finite-difference 2-D Wave Equation
+\begin{align}
+\bigg(\frac{\partial^2}{\partial t^2} - c^2 \Delta \bigg) u^{n}_{m_1,m_2} = 0
+\end{align}
+
+using the explicit update equation
+\begin{align}
+u^{n+1}_{m_1,m_2} &= \frac{2\mu^2 }{3} \big( u^{n}_{m_1+1,m_2} + u^{n}_{m_1-1,m_2} + u^{n}_{m_1,m_2+1} \\
+&+ u^{n}_{m_1,m_2-1} + u^{n}_{m_1+1,m_2+1} + u^{n}_{m_1-1,m_2-1} \big) \\
+&+ (2-4\mu^2) u^{n}_{m_1,m_2} - u^{n-1}_{m_1,m_2}
+\end{align}
+where, 
+\begin{align}
+\mu = ck/h \label{eq:CourantNumber}
+\end{align}
+$$\mu$$ is the Courant Number, which is the ratio between the time step and the grid spacing for a given wave speed. 
+		
+		</div>
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->		
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" style="width:1000px;" class="step" data-x="3000" data-y="4000" data-rotate="20" data-scale="1.0">
+<h3>Stability Conditions</h3>
+<div style="width:100%">
+
+<div style="width:50%; float:left;">
+<img src="./images/jpgDualRect.jpg" />
+<span style="float:left">Dual-Rectilinear Grid </span>
+</div>
+
+
+<div style="width:50%; float:left;">
+<img src="./images/jpgDualHex.jpg" />
+<span style="float:left">Dual-Hexagonal Grid</span>
+</div>
+
+</div>
+Determine the maximum value of Courant Number, \( \mu = ck/h \) such that no exponentially growing plane-wave solutions of the form
+\begin{align*}
+u^{n}_{m_1, m_2} = e^{jk n\omega } e^{jh (\xi_x, \xi_y)\cdot(m_1 \mathbf{x_1}+ m_2 \mathbf{x_2})}
+\end{align*}
+where \((\omega, \xi_x, \xi_y) \in \mathbb{C}^3\) are the wave-numbers in complex frequency domain, \( (h,k) \in  \mathbb{R}^2 \) grid spacing and the integral grid locations \( (n,m_1,m_2) \in \mathbb{Z}^3\).
+		
+		
+		</div>
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->		
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" style="width:1000px;" class="step" data-x="5000" data-y="4000" data-rotate="20" data-scale="1.0">
+<h3>Stability Conditions:</h3>
+<ol>
+<li> \( \omega \in [0,\pi] \)</li>
+<li> \( (\xi_x, \xi_y) \in \{\) One Wave-Number Cell \(\}\) of the Grid. </li>
+</ol>
+
+
+For the Hexagonal Grid, it is determined to be 
+\begin{align}
+\mu \leq \sqrt{\frac{2}{3}}
+\end{align}
+which, is achieved at the corners of the hexagon. By searching over \( \xi_x, \xi_y \in [-\frac{4\pi}{3h},\frac{4\pi}{3h}]\) is sufficient to cover the entire the hexagonal wave-number cell. 
+However, considering hexagonal tiling of the wave-numbers is not necessary in determining stability condition. It is necessary for determining Numerical Dispersion of the scheme.		
+		
+		</div>
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->		
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" style="width:1000px;" class="step" data-x="5000" data-y="6000" data-rotate="20" data-scale="1.0">
+<h3>Application of Staggered Spatial Grids in Optics/Electro-magnetics</h3>
+<div style="width:100%">
+<div style="width:50%; float:left;">
+<img src="./images/jpgUnStaggered.jpg"/> 
+<span style="float:left">Staggered Colocated</span>
+</div>
+<div style="width:50%; float:left;">
+<img src="./images/jpgHexGridStruc.jpg"/> 
+<span style="float:left">Hex-Grid Structure </span>
+</div>
+</div>
+<div>
+\begin{align*}
+\frac{d D_{z0}}{dt} &= \frac{1}{6h}\big( 2 H_{y6} - 2 H_{y3} + H_{y1} - H_{y4} + H_{x5} - H_{x2} \big) \\
+&- \sqrt{3}\big(H_{x1}- H_{x5} + H_{x2} - H_{x4}\big)\\
+\end{align*}
+</div>
+<div>
+\begin{align*}
+\frac{d B_{x0}}{dt} &= \frac{-\sqrt{3}}{6h} \big( E_{z1} - E_{z4} + E_{z2} - E_{z5}  \big)\\
+\frac{d B_{y0}}{dt}&= \frac{1}{6h} \big( 2E_{z6} -2E_{z3} E_{z1} - E_{z4} + E_{z2} - E_{z5}  \big)
+\end{align*}
+</div>
+
+		</div>
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->		
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" style="width:1000px;" class="step" data-x="6300" data-y="4000" data-rotate="20" data-scale="1.0">
+<h3>Application of Staggered Spatial Grids in Optics/Electro-magnetics</h3>
+<div style="width:100%">
+<div style="width:50%; float:left;">
+<img src="./images/jpgStaggeredUncolocated.jpg" alt="Staggered Uncolocated" />
+<span style="float:left"> Staggered Uncolocated</span>
+</div>
+<div style="width:50%; float:left;">
+<img src="./images/jpgHexGridStruc.jpg" alt="Hex Grid Structure" />
+<span style="float:left"> Hexagonal Grid Structure </span>
+</div>
+<br/>
+</div>
+<br>
+<div>
+\begin{align*}
+\frac{d D_{z0}}{dt} &= \frac{2}{3h} \big( H^a_1 - H^d_1 + H^b_2 - H^b_e + H^c_3 - H^f_3 \big)\\
+\frac{d B^a_1}{dt} &= \frac{1}{k} \big(E_{z5} - E_{z0} \big)\\
+\end{align*}
+</div>
+<div>
+\begin{align*}
+\frac{d B^b_2}{dt}&= \frac{1}{k}\big( E_{z6} - E_{z0}\big)\\
+\frac{d B^c_3}{dt}&= \frac{1}{k}\big( E_{z1} - E_{z0} \big)
+\end{align*}
+</div>
+
+
+		</div>
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" style="width:1000px;" class="step" data-x="6300" data-y="2000" data-rotate="20" data-scale="1.0">
+<h3>References</h3>
+<ol>
+<li id="yenliu">Yen Liu,
+  <em>Fourier Analysis of Numerical Algorithms for the Maxwell Equations</em>. Journal of Computational Physics 124, 396-416(1996)
+ </li>
+<li id="brian">Brian Hamilton and Stefan Bilbao,
+<em>Hexagonal vs. Rectilinear Grids for Explicit Finite Difference Schemes for the Two-Dimensional Wave Equation</em>Proceedings of International Congress of Acoustics(ICA), Montreal, Canada(2013)
+ </li>
+<li id="kantor">Kantorovich and Krylov,
+<em>Approximate Methods of Higher Analysis</em> P Noordhoff Ltd., Groningen, Netherlands.(1964)
+ </li>
+<li id="southwell">R.V Southwell, <i>Relaxation Methods in Theoretical Physics</i> Oxford University Press(1946)
+ </li>
+</ol>
+
+		</div>
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" style="width:1000px;">
+
+
+		</div>
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" style="width:1000px;">
+
+
+		</div>
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" style="width:1000px;">
+
+
+		</div>
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" style="width:1000px;">
+
+
+		</div>
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" style="width:1000px;">
+
+
+		</div>
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" style="width:1000px;">
+
+
+		</div>
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" style="width:1000px;">
+
+
+		</div>
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+	
+		</div>
+		
+		
+	<!-- Call the impress.js file! -->
+			<script src="./Impress/js/impress.js"></script>		
+			<script>impress().init();</script>
+			
+		</body>
+
+		
+	</html>

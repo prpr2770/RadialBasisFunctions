@@ -1,0 +1,39 @@
+%--------------
+%% preamble.tex
+%% this should be included with a command like
+%% \input{preamble.tex}
+%% \lecture{1}{September 4, 1996 }{Daniel A. Spielman}{name
+%%  of poor scribe}
+
+\hbadness=10000
+\vbadness=10000
+
+\setlength{\oddsidemargin}{.25in}
+\setlength{\evensidemargin}{.25in}
+\setlength{\textwidth}{6in}
+\setlength{\topmargin}{-0.4in}
+\setlength{\textheight}{8.5in}
+
+\newcommand{\handout}[5]{
+   \renewcommand{\thepage}{#1-\arabic{page}}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{
+    \hbox to 5.78in { {\b APPM7440: Radial Basis Functions - Finite Differences
+
+ }
+     	 \hfill #2 }
+       \vspace{4mm}
+       \hbox to 5.78in { {\Large \hfill #5  \hfill} }
+       \vspace{2mm}
+       \hbox to 5.78in { {\it #3 \hfill #4} }
+      }
+   }
+   \end{center}
+   \vspace*{4mm}
+}
+
+\newcommand{\lecture}[4]{\handout{#1}{#2}{ #3}{Scribe: #4}{ Lecture #1}}
+\newcommand{\assignment}[5]{\handout{#1}{#2}{ #3}{Author: #4(#5)}{ Assignment #1}}
+\newcommand{\labreport}[5]{\handout{#1}{#2}{ #3}{Author: #4(#5)}{ Lab Report #1}}

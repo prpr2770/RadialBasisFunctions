@@ -1,0 +1,182 @@
+	<html>
+		<head>
+	<! -- Automatic Equation Numbering -->
+		<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+	  TeX: { equationNumbers: { autoNumber: "AMS" } }
+	});
+	</script>
+
+			<script type="text/javascript" src="./MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+			
+<!--
+				<link href="./Impress/css/impress-demo.css" rel="stylesheet" /> 
+-->
+				
+			<title> Hexagonal Grids for solving PDEs | by Prasanth Prahladan</title>
+			</head>
+
+		<body>
+
+	<!--
+		For example this fallback message is only visible when there is `impress-not-supported` class on body.
+	-->
+	<div class="fallback-message">
+		<p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified 
+version of this presentation.</p>
+		<p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+	</div>
+		<!--
+			
+			So to make a summary of all the possible attributes used to position presentation steps, we have:
+			
+			* `data-x`, `data-y`, `data-z` - they define the position of **the center** of step element on
+				the canvas in pixels; their default value is 0;
+			* `data-rotate-x`, `data-rotate-y`, 'data-rotate-z`, `data-rotate` - they define the rotation of
+				the element around given axis in degrees; their default value is 0; `data-rotate` and `data-rotate-z`
+				are exactly the same;
+			* `data-scale` - defines the scale of step element; default value is 1
+			
+			These values are used by impress.js in CSS transformation functions, so for more information consult
+			CSS transfrom docs: https://developer.mozilla.org/en/CSS/transform
+			
+		-->
+		
+	<div id="impress">
+
+	<!--
+		<div id="bored" class="step slide" data-x="-1000" data-y="-1500">
+			In equation \eqref{eq:sample}, we find the value of an
+	interesting integral:
+
+	\begin{equation}
+	  \int_0^\infty \frac{x^3}{e^x-1}\,dx = \frac{\pi^4}{15}
+	  \label{eq:sample}
+	\end{equation}
+		</div>
+	<div class="step slide" data-x="0" data-y="-1500">
+			<q>Don't you think that presentations given <strong>in modern browsers</strong> shouldn't <strong>copy the limits
+</strong> of 'classic' slide decks?</q>
+		</div>
+
+		<div class="step slide" data-x="1000" data-y="-1500">
+			<q>Would you like to <strong>impress your audience</strong> with <strong>stunning visualization</strong> of your 
+talk?</q>
+		</div>
+		
+		-->
+
+			<div id="title" class="step slide" data-x="0" data-y="0" data-scale="5">
+			<span class="try">APPM 7400 HW#1</span>
+			<h1>Hexagonal Grids for solving PDEs<sup>*</sup></h1>
+			<span class="footnote"><sup>*</sup>Prasanth Prahladan</span>
+		</div>
+		
+			<div id="" class="step"  data-x="2500" data-y="2500" data-z="-3000" data-rotate="300" data-scale="7" style="width:1000px;">
+			<ol>
+			<li> Construction of Spatial Grid</li>
+<li> Grids and Grid Function</li>
+<li> Tilings in Wave-number Space</li>
+<li> Finite Difference Operators</li>
+<li> Explicit Finite Difference Schemes</li>
+<li> Stability Conditions </li>
+<li> Numerical Dispersion</li>
+<li> Example: Use of Staggered Grids in Computational Optics/Electro-magnetics</li>
+		</ol>
+		</div>
+		
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" class="step"  data-x="2500" data-y="2500" data-z="-3000" data-rotate="300" data-scale="7" style="width:1000px;">
+		<h2>Introduction to Spatial Grids</h2>
+<p>A regular 2-D spatial grid is a collection of points defined as:</p>
+\begin{equation}
+\mathbf{G}_h = \bigg\{\mathbf{r}_{m_1, m_2} = h \big( m_1 \mathbf{x_1} + m_2 \mathbf{x_2} \big) | (m_1,m_2) \in \mathbb{Z}^2\bigg\}
+\end{equation}
+
+<p>A hexagonal grid is obtained when we displace each layer of points by $(h_x, h_y) = (\frac{h}{2}, \frac{h\sqrt{3}}{2})$.</p>
+
+		</div>
+
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" class="step"  data-x="2500" data-y="2500" data-z="-3000" data-rotate="300" data-scale="7" style="width:1000px;">
+For each regular lattice, a suitable coordinate axis may be chosen for facilitating analysis. 
+For the Rectilinear Grid, we have $\big( \mathbf{x_1}, \mathbf{x_2} \big) = \big([1,0]^T, [0,1]^T \big)$.
+
+For the Hexagonal Grid, we have $\big( \mathbf{x_1}, \mathbf{x_2} \big) = \big([1,0]^T, [\frac{-1}{2},\frac{\sqrt{3}}{2}]^T \big)$.
+
+		</div>		
+		
+
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" class="step"  data-x="2500" data-y="2500" data-z="-3000" data-rotate="300" data-scale="7" style="width:1000px;">
+<h2>Staggered Grids</h2>
+
+		</div>		
+
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" class="step"  data-x="2500" data-y="2500" data-z="-3000" data-rotate="300" data-scale="7" style="width:1000px;">
+<h2>Triangular and Hexagonal Nets</h2>
+<div> Triangular Nets
+\begin{equation}
+u_1 - u_0 &= u(x+h,y) - u(x,y) \\
+&= h (\frac{\partial}{\partial x})u + \frac{h^2}{2!}(\frac{\partial^2 }{\partial^2 x})u + \frac{h^3}{3!} (\frac{\partial^3}{\partial^3 x})u + \cdots\\
+u_2 - u_0 &= u(x+\frac{h}{2},y+\frac{\sqrt{3}h}{2}) - u(x,y) \\
+&= h \bigg(\frac{1}{2}\frac{\partial}{\partial x} + \frac{\sqrt{3}}{2} \frac{\partial}{\partial y} \bigg)u \\
+&+ \frac{h^2}{2!}\bigg(\frac{1}{2}\frac{\partial}{\partial x} + \frac{\sqrt{3}}{2} \frac{\partial}{\partial y} \bigg)^2 u \\
+&+ \frac{h^3}{3!} \bigg(\frac{1}{2}\frac{\partial}{\partial x} + \frac{\sqrt{3}}{2} \frac{\partial}{\partial y} \bigg)^3 u + \cdots\\
+u_3 - u_0 &= u(x-\frac{h}{2},y+\frac{\sqrt{3}h}{2}) - u(x,y) \\
+&= h \bigg(\frac{-1}{2}\frac{\partial}{\partial x} + \frac{\sqrt{3}}{2} \frac{\partial}{\partial y} \bigg)u \\
+&+ \frac{h^2}{2!}\bigg(\frac{-1}{2}\frac{\partial}{\partial x} + \frac{\sqrt{3}}{2} \frac{\partial}{\partial y} \bigg)^2 u \\
+&+ \frac{h^3}{3!} \bigg(\frac{-1}{2}\frac{\partial}{\partial x} + \frac{\sqrt{3}}{2} \frac{\partial}{\partial y} \bigg)^3 u + \cdots\\
+\cdots (u_4-u_0), &(u_5-u_0), (u_6-u_0)
+\end{equation}
+</div>
+
+<div> Hexagonal Net
+
+</div> 
+		</div>		
+
+		<! -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   -->
+		<div id="" class="step"  data-x="2500" data-y="2500" data-z="-3000" data-rotate="300" data-scale="7" style="width:1000px;">
+
+
+		</div>				
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<div id="imagination" class="step" data-x="6700" data-y="-300" data-scale="6">
+			<p>the only <b>limit</b> is your <b class="imagination">imagination</b></p>
+		</div>
+
+		<div id="source" class="step" data-x="6300" data-y="2000" data-rotate="20" data-scale="4">
+			<p>want to know more?</p>
+			<q><a href="http://github.com/bartaz/impress.js">use the source</a>, Luke!</q>
+		</div>
+
+		<div id="one-more-thing" class="step" data-x="6000" data-y="4000" data-scale="2">
+			<p>one more thing...</p>
+		</div>
+
+		<div id="its-in-3d" class="step" data-x="6200" data-y="4300" data-z="-100" data-rotate-x="-40" data-rotate-y="10" 
+data-scale="2">
+			<p><span class="have">have</span> <span class="you">you</span> <span class="noticed">noticed</span> <span class=
+"its">it's</span> <span class="in">in</span> <b>3D<sup>*</sup></b>?</p>
+			<span class="footnote">* beat that, prezi ;)</span>
+		</div>
+		
+	</div>
+	<!-- Call the impress.js file! -->
+			<script src="./Impress/js/impress.js"></script>		
+			<script>impress().init();</script>
+
+		</body>
+
+		
+	</html>
